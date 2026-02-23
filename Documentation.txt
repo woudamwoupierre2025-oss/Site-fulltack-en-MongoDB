@@ -10,3 +10,16 @@
 					next();
 
 			   });
+
+//////////////// athentification
+
+	1. 📌 Ça sert à quoi jsonwebtoken ?
+
+jsonwebtoken est une bibliothèque Node.js qui permet de créer et vérifier des JWT (JSON Web Tokens).
+
+👉 Les JWT servent à faire l’authentification sécurisée (login, session, API protégée).
+
+
+	2. pour lire les cookies 
+
+		npm install -save cookie-parser

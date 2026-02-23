@@ -55,10 +55,34 @@ userSchema.pre('save', async function(next) {
   try {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
+    next();
   } catch (err) {
     next(err);
   }
 });
+
+
+userSchema.statics.login = async function(email, password) {
+  const user = await this.findOne({ email });
+  if (!user) {
+    throw new Error('Incorrect email or password');
+  }
+  const auth = await bcrypt.compare(password, user.password);
+  if (!auth) {
+    throw new Error('Incorrect email or password');
+  }
+  return user;
+};
+
+
+const UserModel = mongoose.model('User', userSchema);
+module.exports = UserModel;
+
+
+// Method to compare passwords
+userSchema.methods.comparePassword = async function(plainPassword) {
+  return await bcrypt.compare(plainPassword, this.password);
+};
 
 const userModel = mongoose.model('User', userSchema);
 module.exports = userModel;
